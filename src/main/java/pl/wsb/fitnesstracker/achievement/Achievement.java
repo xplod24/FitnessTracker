@@ -1,4 +1,4 @@
-package pl.wsb.fitnesstracker.event;
+package pl.wsb.fitnesstracker.achievement;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -6,27 +6,26 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.wsb.fitnesstracker.user.api.User;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user_event")
+@Table(name = "achievement")
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserEvent {
+public class Achievement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String name;
+
+    @Column(name = "earned_at", nullable = false)
+    private LocalDateTime earnedAt;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id", nullable = false)
-    private Event event;
-
-    @Column(name = "registration_date", nullable = false)
-    private LocalDate registrationDate;
 }

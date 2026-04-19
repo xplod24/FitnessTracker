@@ -3,19 +3,20 @@ package pl.wsb.fitnesstracker.event;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
 import java.time.LocalDate;
 import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
 
-
+    // 1. Zapytanie JPQL (zależne od nazw klas i pól w Javie)
     @Query("SELECT e FROM Event e WHERE e.startDate > :now ORDER BY e.startDate")
     List<Event> findUpcoming(@Param("now") LocalDate now);
 
-
+    // 2. Zapytanie Natywne SQL (zależne od nazw tabel i kolumn w bazie)
     @Query(
-            value = "SELECT COUNT(*) FROM user_events WHERE event_id = :eventId",
+            value = "SELECT e.name, COUNT(ue.id) FROM event e LEFT JOIN user_event ue ON e.id = ue.event_id GROUP BY e.id, e.name",
             nativeQuery = true
     )
-    long countParticipants(@Param("eventId") Long eventId);
+    List<Object[]> findEventNamesWithParticipantCount();
 }

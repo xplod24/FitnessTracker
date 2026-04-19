@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.time.LocalDate;
 
 @Entity
@@ -20,8 +21,9 @@ public class Event {
     @Column(nullable = false)
     private String name;
 
-    private String location;
-
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
+
+    @Column(nullable = false)
+    private String location;
 }
