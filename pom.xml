@@ -6,7 +6,7 @@
 
     <groupId>pl.wsb</groupId>
     <artifactId>fitness-tracker</artifactId>
-    <version>1.2.0-75196-SNAPSHOT</version>
+    <version>1.2.0-75916-SNAPSHOT</version>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
