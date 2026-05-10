@@ -2,9 +2,6 @@ package pl.wsb.fitnesstracker.user.internal;
 
 import pl.wsb.fitnesstracker.user.api.User;
 
-/**
- * Klasa narzędziowa odpowiadająca za mapowanie encji User na obiekty DTO i odwrotnie.
- */
 class UserMapper {
 
     static UserDto toDto(User user) {

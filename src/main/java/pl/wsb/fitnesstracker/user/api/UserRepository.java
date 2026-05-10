@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    // Wyszukiwanie po emailu bez rozróżniania wielkości liter (wymóg FR5)
+    // Wyszukiwanie po emailu bez rozróżniania wielkości liter
     List<User> findByEmailContainingIgnoreCase(String emailFragment);
 
-    // Wyszukiwanie użytkowników urodzonych przed daną datą (starsi niż - wymóg FR6)
+    // Wyszukiwanie użytkowników urodzonych przed daną datą
     List<User> findByBirthdateBefore(LocalDate date);
+
+    void deleteByid(Long id);
 }

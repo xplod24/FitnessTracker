@@ -42,6 +42,19 @@ class UserService {
         userRepository.deleteById(id);
     }
 
+    public void deleteUser(String email) {
+
+        if(email!=null){
+            List<User> userList = userRepository.findByEmailContainingIgnoreCase(email);
+            if(userList.size() > 0 ) {
+
+            userRepository.delete(userList.get(0));
+        }
+        }
+
+    }
+
+
     public User updateUser(Long id, User updatedUserData) {
         User existingUser = findUserById(id);
         existingUser.setFirstName(updatedUserData.getFirstName());

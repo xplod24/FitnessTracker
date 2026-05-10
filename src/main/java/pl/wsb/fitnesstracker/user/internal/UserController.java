@@ -7,10 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-/**
- * Kontroler REST udostępniający operacje CRUD dla zasobu użytkownika.
- * Zwraca dane w formacie JSON i komunikuje się przez protokół HTTP.
- */
 @RestController
 @RequestMapping("/v1/users")
 @RequiredArgsConstructor
@@ -66,5 +62,11 @@ class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUserbyEmail(@RequestBody UserRequestDto requestDto) {
+        userService.deleteUser(requestDto.email());
     }
 }
