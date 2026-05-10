@@ -38,6 +38,7 @@ class UserApiIntegrationTest extends IntegrationTestBase {
 
     @Test
     void shouldReturnAllUsers_whenGettingAllUsers() throws Exception {
+        System.out.println(">>> START TESTU: Pobieranie wszystkich użytkowników (GET /v1/users) działa.");
         User user1 = existingUser(generateUser());
         User user2 = existingUser(generateUser());
 
@@ -54,10 +55,12 @@ class UserApiIntegrationTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$[1].birthdate").value(ISO_DATE.format(user2.getBirthdate())))
 
                 .andExpect(jsonPath("$[2]").doesNotExist());
+        System.out.println(">>> KONIEC TESTU: Pobieranie wszystkich użytkowników zakończone sukcesem.");
     }
 
     @Test
     void shouldReturnAllSimpleUsers_whenGettingAllUsers() throws Exception {
+        System.out.println(">>> START TESTU: Pobieranie uproszczonych użytkowników (GET /v1/users/simple) działa.");
         User user1 = existingUser(generateUser());
         User user2 = existingUser(generateUser());
 
@@ -72,10 +75,12 @@ class UserApiIntegrationTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$[1].lastName").value(user2.getLastName()))
 
                 .andExpect(jsonPath("$[2]").doesNotExist());
+        System.out.println(">>> KONIEC TESTU: Pobieranie uproszczonych użytkowników zakończone sukcesem.");
     }
 
     @Test
     void shouldReturnDetailsAboutUser_whenGettingUserById() throws Exception {
+        System.out.println(">>> START TESTU: Pobieranie szczegółów użytkownika po ID (GET /v1/users/{id}) działa.");
         User user1 = existingUser(generateUser());
 
         mockMvc.perform(get("/v1/users/{id}", user1.getId()).contentType(MediaType.APPLICATION_JSON))
@@ -86,11 +91,12 @@ class UserApiIntegrationTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.lastName").value(user1.getLastName()))
                 .andExpect(jsonPath("$.birthdate").value(ISO_DATE.format(user1.getBirthdate())))
                 .andExpect(jsonPath("$.email").value(user1.getEmail()));
-
+        System.out.println(">>> KONIEC TESTU: Pobieranie szczegółów po ID zakończone sukcesem.");
     }
 
     @Test
     void shouldReturnDetailsAboutUser_whenGettingUserByEmail() throws Exception {
+        System.out.println(">>> START TESTU: Pobieranie użytkownika po e-mailu (GET /v1/users/email) działa.");
         User user1 = existingUser(generateUser());
 
         mockMvc.perform(get("/v1/users/email").param("email", user1.getEmail()).contentType(MediaType.APPLICATION_JSON))
@@ -99,13 +105,14 @@ class UserApiIntegrationTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id").value(user1.getId().intValue()))
                 .andExpect(jsonPath("$[0].email").value(user1.getEmail()));
+        System.out.println(">>> KONIEC TESTU: Pobieranie po e-mailu zakończone sukcesem.");
     }
 
     @Test
     void shouldReturnAllUsersOlderThan_whenGettingAllUsersOlderThan() throws Exception {
+        System.out.println(">>> START TESTU: Pobieranie użytkowników starszych niż (GET /v1/users/older/{time}) działa.");
         User user1 = existingUser(generateUserWithDate(LocalDate.of(2000, 8, 11)));
         existingUser(generateUserWithDate(LocalDate.of(2024, 8, 11)));
-
 
         mockMvc.perform(get("/v1/users/older/{time}", LocalDate.of(2024, 8, 10)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(log())
@@ -116,12 +123,13 @@ class UserApiIntegrationTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$[0].birthdate").value(ISO_DATE.format(user1.getBirthdate())))
 
                 .andExpect(jsonPath("$[1]").doesNotExist());
+        System.out.println(">>> KONIEC TESTU: Pobieranie użytkowników ze względu na wiek zakończone sukcesem.");
     }
 
     @Test
     void shouldRemoveUserFromRepository_whenDeletingClient() throws Exception {
+        System.out.println(">>> START TESTU: Usuwanie użytkownika (DELETE /v1/users/{userId}) działa.");
         User user1 = existingUser(generateUser());
-
 
         mockMvc.perform(delete("/v1/users/{userId}", user1.getId())
                         .contentType(MediaType.APPLICATION_JSON))
@@ -130,12 +138,12 @@ class UserApiIntegrationTest extends IntegrationTestBase {
 
         List<User> allUser = getAllUsers();
         assertThat(allUser).isEmpty();
-
+        System.out.println(">>> KONIEC TESTU: Usuwanie użytkownika zakończone sukcesem.");
     }
 
     @Test
     void shouldPersistUser_whenCreatingUser() throws Exception {
-
+        System.out.println(">>> START TESTU: Tworzenie użytkownika (POST /v1/users) działa.");
         final String USER_NAME = "Mike";
         final String USER_LAST_NAME = "Scott";
         final String USER_BIRTHDATE = "1999-09-29";
@@ -169,11 +177,12 @@ class UserApiIntegrationTest extends IntegrationTestBase {
         assertThat(user.getLastName()).isEqualTo(USER_LAST_NAME);
         assertThat(user.getBirthdate()).isEqualTo(LocalDate.parse(USER_BIRTHDATE));
         assertThat(user.getEmail()).isEqualTo(USER_EMAIL);
-
+        System.out.println(">>> KONIEC TESTU: Tworzenie użytkownika zakończone sukcesem.");
     }
 
     @Test
     void shouldUpdateUser_whenUpdatingUser() throws Exception {
+        System.out.println(">>> START TESTU: Aktualizacja użytkownika (PUT /v1/users/{userId}) działa.");
         User user1 = existingUser(generateUser());
 
         final String USER_NAME = "Mike";
@@ -207,7 +216,6 @@ class UserApiIntegrationTest extends IntegrationTestBase {
         assertThat(user.getLastName()).isEqualTo(USER_LAST_NAME);
         assertThat(user.getBirthdate()).isEqualTo(LocalDate.parse(USER_BIRTHDATE));
         assertThat(user.getEmail()).isEqualTo(USER_EMAIL);
+        System.out.println(">>> KONIEC TESTU: Aktualizacja użytkownika zakończona sukcesem.");
     }
-
-
 }
