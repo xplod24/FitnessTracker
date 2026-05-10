@@ -1,11 +1,9 @@
 package pl.wsb.fitnesstracker.healthmetrics;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 import pl.wsb.fitnesstracker.user.api.User;
 
 import java.time.LocalDate;
@@ -13,32 +11,32 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "health_metrics")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
+@Setter
+@NoArgsConstructor
 public class HealthMetrics {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Nullable
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    // Zmieniono na OneToOne zgodnie z instrukcją na ocenę 5.0
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    @Column(nullable = false)
+    @Column(name = "measurement_date", nullable = false) // Zmieniono nazwę na bardziej specyficzną (pod schemat)
     private LocalDate date;
 
-    @Column(nullable = false)
-    private double weight;
+    @Column(name = "weight", nullable = false)
+    private Double weight;
 
-    @Column(nullable = false)
-    private double height;
+    @Column(name = "height", nullable = false)
+    private Double height;
 
-    @Column(name = "heart_rate", nullable = false)
-    private int heartRate;
+    @Column(name = "heart_rate")
+    private Integer heartRate;
 
-    public HealthMetrics(User user, LocalDate date, double weight, double height, int heartRate) {
+    public HealthMetrics(User user, LocalDate date, Double weight, Double height, Integer heartRate) {
         this.user = user;
         this.date = date;
         this.weight = weight;
